@@ -1,16 +1,17 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+// src/app/app.config.ts
+import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http'; // Añade withFetch
 import { authInterceptor } from './interceptors/auth.interceptor';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes), provideClientHydration(withEventReplay()),
-    provideHttpClient(withInterceptors([authInterceptor]))
+    provideZonelessChangeDetection(),
+    provideRouter(routes),
+    provideHttpClient(
+      withInterceptors([authInterceptor]),
+      withFetch() // <--- ¡Añade esta línea aquí!
+    )
   ]
 };
