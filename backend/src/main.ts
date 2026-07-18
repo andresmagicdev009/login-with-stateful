@@ -12,6 +12,12 @@ async function bootstrap() {
       secret: 'my-secret-key',
       resave: false,
       saveUnitialized: false,
+      cookie: {
+        secure: false,
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24, // 1 dia
+        sameSite: 'lax', // Para permitir el envio de cookies entre dominios
+      }
   }));
 
   app.useGlobalPipes(
